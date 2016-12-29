@@ -150,13 +150,12 @@ bool IsPopOrder(vector<int> pushOrder, vector<int> popOrder)
 			s.pop();
 			indexPopOrder++;
 		}
-
-		//上面循环结束有两种情况：
-		//1. i == len 说明有元素不符合出栈顺序，没有执行内层循环而++i
-		//2. indexPopOrder == len 或 s.empty() 说明出栈顺序已经遍历完了，那么栈也对应的空了
-		if(s.empty() // 等价if(indexPopOrder == len)
-			return true;
-
-		return false;
 	}
+	//上面循环结束有两种情况：
+	//1. i == len 说明有元素不符合出栈顺序，没有执行内层循环而++i
+	//2. indexPopOrder == len 或 s.empty() 说明出栈顺序已经遍历完了，那么栈也对应的空了
+	if(s.empty() // 等价if(indexPopOrder == len)
+		return true;
+
+	return false;
 }
