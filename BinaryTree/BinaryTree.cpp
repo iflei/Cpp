@@ -18,3 +18,22 @@ void LevelOrder()
 	}
 	cout << endl;
 }
+//第k层节点个数
+size_t GetKLevel(int k)
+{
+	assert(k > 0);
+	return _GetKLevel(k, _root);
+}
+
+size_t _GetKLevel(int k, Node* root)
+{
+	if(root == NULL)
+	  return 0;
+
+	if(k == 1)
+	  return 1;
+
+	size_t leftSize = _GetKLevel(k - 1, root->_left);
+	size_t rightSize = _GetKLevel(k - 1, root->right);
+	return leftSize + rightSize;
+}
