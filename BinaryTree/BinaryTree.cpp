@@ -37,3 +37,18 @@ size_t _GetKLevel(int k, Node* root)
 	size_t rightSize = _GetKLevel(k - 1, root->right);
 	return leftSize + rightSize;
 }
+//叶子节点个数
+size_t LeafSize() 
+{
+	return _LeafSize(_root);
+}
+size_t _LeafSize(Node* root)
+{
+	if (root == 0)
+	  return 0;
+	
+	if (root->_left == 0 && root->_right == 0)
+	  return 1;
+	
+	return _LeafSize(root->_left) + _LeafSize(root->_right);
+}
