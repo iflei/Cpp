@@ -55,3 +55,18 @@ size_t _Depth(Node* root)
 	return leftDepth > rightDepth ? leftDepth : rightDepth;
 }
 
+//销毁二叉树
+void _Destroy(Node* root)
+{
+	if(root == NULL)
+		return;
+
+	if(root->_left)
+		_Destroy(root->_left);
+
+	if(root->_right)
+		_Destroy(root->_right);
+
+	delete root;
+	root = NULL;
+}
