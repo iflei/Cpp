@@ -19,12 +19,6 @@ void LevelOrder()
 	cout << endl;
 }
 //第k层节点个数
-size_t GetKLevel(int k)
-{
-	assert(k > 0);
-	return _GetKLevel(k, _root);
-}
-
 size_t _GetKLevel(int k, Node* root)
 {
 	if(root == NULL)
@@ -38,10 +32,6 @@ size_t _GetKLevel(int k, Node* root)
 	return leftSize + rightSize;
 }
 //叶子节点个数
-size_t LeafSize() 
-{
-	return _LeafSize(_root);
-}
 size_t _LeafSize(Node* root)
 {
 	if (root == 0)
@@ -52,3 +42,16 @@ size_t _LeafSize(Node* root)
 	
 	return _LeafSize(root->_left) + _LeafSize(root->_right);
 }
+
+//二叉树高度
+size_t _Depth(Node* root)
+{
+	if(root == NULL)
+	  return 0;
+
+	size_t leftDepth = _Depth(root->_left);
+	size_t rightDepth = _Depth(root->_right);
+
+	return leftDepth > rightDepth ? leftDepth : rightDepth;
+}
+
