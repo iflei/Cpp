@@ -1,3 +1,10 @@
+typedef struct BinaryTreeNode
+{
+	int _value;
+	BinaryTreeNode* _left;
+	BinaryTreeNode* _right;
+}Node;
+
 //实现一颗二叉树的层序遍历
 void LevelOrder()
 {
@@ -70,3 +77,50 @@ void _Destroy(Node* root)
 	delete root;
 	root = NULL;
 }
+
+//由前序遍历和中序遍历重建二叉树
+Node* Construct(int* preOrder, int* inOrder, size_t size)
+{
+	assert(preOrder && inOrder && size > 0);
+	return _Construct(preOrder, preOrder+size-1, inOrder, inOrder+size-1);
+}
+
+Node* _Construct(int* startPre, int* endPre, int* startIn, int* endIn)
+{
+	//前序第一个值是根节点
+	int rootValue = startPre[0];
+	Node* root = new Node();
+	root->_value = rootValue;
+	root->_left = root->right = NULL;
+	//只有一个元素
+	if(startPre == endPre)
+	{
+		if(startIn == endIn && *startPre = *startIn)
+		  return root;
+		else
+		  return NULL;
+	}
+	//中序序列中找根节点值
+	int* rootIn = startIn;
+	while(rootIn <= endIn && *rootIn != rootValue)
+	  ++rootIn;
+
+	if(rootIn > endIn) //没找到
+	  return NULL;
+
+	//左子树
+	int leftSize = rootIn - startIn;
+	int* leftPreEnd = startPre + leftSize;
+	// (startPre+1, leftPreEnd, startIn, rootIn-1)
+	if(leftSize	> 0) //构建左子树
+	  root->_left = _Construct(startPre+1, leftPreEnd, startIn, rootIn-1);
+	//左子树节点数小于整个树节点数，说明右子树也存在
+	if(leftSize < endPre - startPre)
+	  root->_right = _Construct(leftPreEnd + 1, endPre, rootIn + 1, endIn);
+
+	return root;
+}
+
+//判断一棵二叉树是否是平衡二叉树
+
+//求一颗二叉树的镜像
