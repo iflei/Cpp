@@ -122,5 +122,51 @@ Node* _Construct(int* startPre, int* endPre, int* startIn, int* endIn)
 }
 
 //判断一棵二叉树是否是平衡二叉树
+//红黑树
+bool IsBlance()
+{
+	//空树返回true
+	if(_root == NULL)
+	  return true;
+	//根节点为红返回false
+	if(_root->_color == RED)
+	  return false;
+	//计算一条路径上的黑色节点数
+	int k = 0;
+	Node* cur = _root;
+	while(cur)
+	{
+		if(cur->_color == BLACK)
+		  k++;
+
+		cur = cur->_next;
+	}
+	//
+	int count = 0;
+	_IsBlance(_root, k, count);
+}
+
+bool _IsBlance(Node* root, const int k, int count)
+{
+	if(root == NULL)
+	  return true;
+
+	//检查是否存在连续红节点
+	if(root->_color == RED && root->_parent->_color == RED)
+	  return false;
+
+	//统计黑色节点个数
+	if(root->_color == BLACK)
+	  ++count;
+	//到叶子节点时检测黑色节点数是否和k相等
+	if(root->_left == NULL && root->_right == NULL && k != count)
+	  return false;
+
+	//递归左子树和右子树
+	return _IsBalance(root->_left, k, count) && _IsBalance(root->_right, k, count);
+}
+
+//AVL树
+
 
 //求一颗二叉树的镜像
