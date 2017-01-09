@@ -157,6 +157,45 @@ bool _IsBlance(Node* root, const int k, int count)
 
 //AVL树
 
+//是否是完全二叉树
+bool IsCompleteTree(Node* root)
+{
+	queue<Node*> q;
+	if(root)
+	  q.push(root);
+
+	bool flag = true;
+	while(!q.empty())
+	{
+		Node* front = q.front();
+		q.pop();
+
+		if(front->_left == NULL)
+		  flag = false;
+		else 
+		{
+			//1. 有左子树，但层序中前一个节点没有右子树
+			if(flag == false)
+			  return false;
+			//前节点有右子树
+			q.push(front->left);
+		}
+
+		if(front->_right == NULL)
+		  flag = false;
+		else
+		{
+			//2. 有右子树，但没有左子树
+			if(flag == false)
+			  return false;
+			//有左子树
+			q.push(front->_right);
+		}
+
+		return true;
+	}
+}
+
 //求一颗二叉树的镜像
 
 
