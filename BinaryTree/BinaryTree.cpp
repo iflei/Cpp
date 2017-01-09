@@ -79,48 +79,37 @@ void _Destroy(Node* root)
 }
 
 //由前序遍历和中序遍历重建二叉树
-Node* Construct(int* preOrder, int* inOrder, size_t size)
+Node* Rebuild(int* prevOrder, int& prevIndex, int* inOrder, int inBegin, int inEnd)
 {
-	assert(preOrder && inOrder && size > 0);
-	return _Construct(preOrder, preOrder+size-1, inOrder, inOrder+size-1);
-}
 
-Node* _Construct(int* startPre, int* endPre, int* startIn, int* endIn)
-{
-	//前序第一个值是根节点
-	int rootValue = startPre[0];
-	Node* root = new Node();
-	root->_value = rootValue;
-	root->_left = root->right = NULL;
-	//只有一个元素
-	if(startPre == endPre)
+	assert(prevOrder && inOrder);
+
+	Node* root = NULL;
+	if (inBegin <= inEnd)
 	{
-		if(startIn == endIn && *startPre = *startIn)
-		  return root;
-		else
-		  return NULL;
+		root = new Node(prevOrder[prevIndex]);
+		if (inBegin == inEnd)
+			return root;
+
+		int i = inBegin;
+		for (; i <= inEnd; ++i)
+		{
+			if (prevOrder[prevIndex] == inOrder[i])
+				break;
+		}
+
+		if (i > inEnd)
+			throw invalid_argument("树遍历序列不匹配");
+
+		root->left = Rebuild(prevOrder, ++prevIndex, inOrder, inBegin, i - 1);
+		//左子树构建完指针 prevIndex 会指到 prevOrder 中左子树节点最后一个
+
+		if (i < inEnd)  //（i == iEnd时没有右子树）
+			root->right = Rebuild(prevOrder, ++prevIndex, inOrder, i + 1, inEnd);
 	}
-	//中序序列中找根节点值
-	int* rootIn = startIn;
-	while(rootIn <= endIn && *rootIn != rootValue)
-	  ++rootIn;
-
-	if(rootIn > endIn) //没找到
-	  return NULL;
-
-	//左子树
-	int leftSize = rootIn - startIn;
-	int* leftPreEnd = startPre + leftSize;
-	// (startPre+1, leftPreEnd, startIn, rootIn-1)
-	if(leftSize	> 0) //构建左子树
-	  root->_left = _Construct(startPre+1, leftPreEnd, startIn, rootIn-1);
-	//左子树节点数小于整个树节点数，说明右子树也存在
-	if(leftSize < endPre - startPre)
-	  root->_right = _Construct(leftPreEnd + 1, endPre, rootIn + 1, endIn);
 
 	return root;
 }
-
 //判断一棵二叉树是否是平衡二叉树
 //红黑树
 bool IsBlance()
@@ -168,5 +157,6 @@ bool _IsBlance(Node* root, const int k, int count)
 
 //AVL树
 
-
 //求一颗二叉树的镜像
+
+
