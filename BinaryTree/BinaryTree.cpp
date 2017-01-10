@@ -156,6 +156,46 @@ bool _IsBlance(Node* root, const int k, int count)
 }
 
 //AVL树
+bool _IsBlance(Node* root)
+{
+	if(root == NULL)
+	  return true;
+
+	size_t leftDepth = _Depth(root->_left);
+	size_t rightDepth = _Depth(root->_right);
+
+	if(rightDepth - leftDepth != root->_bf)
+	  return false; //平衡因子异常
+
+	return abs(rightDepth-leftDepth) <= 1 
+		&& _IsBlance(root->_left)
+		&& _IsBlance(root->_right);
+}
+//优化
+bool IsBlanceOP()
+{
+	size_t depth = 0;
+	return _IsBlanceOP(_root, depth);
+}
+
+bool _IsBlanceOP(Node* root, size_t& depth)
+{
+	if(root == NULL)
+	{
+		depth = 0;
+		return true;
+	}
+
+	size_t leftDepth, rightDepth;
+	if(_IsBlanceOP(root->_left, leftDepth) 
+		&& _IsBlanceOP(root->_right, rightDepth))
+	{
+		depth = leftDepth > rightDepth ? leftDepth+1 : rightDepth+1;
+		return abs(leftDepth-rightDepth) < 2;
+	}
+	else
+	  return false;
+}
 
 //是否是完全二叉树
 bool IsCompleteTree(Node* root)
