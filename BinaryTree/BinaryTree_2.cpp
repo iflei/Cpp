@@ -86,7 +86,44 @@ bool IsInTree(Node* root, Node* node)
 }
 
 //判断一颗二叉树是是否是另一颗树的子树
+bool HasSubTree(Node* root1, Node* root2)
+{
+	if(root1 && root2 == NULL)
+	  return true;//空树是任何树的子树
 
+	if(root1 == NULL)
+	  return false;//root1不能为空
+
+	bool ret = false;
+	//如果两个树都不为空，且根节点值相等
+	//从相等的节点开始判断是否是子树
+	if(root1->_data == root2->_data)
+	   ret = SubTree(root1, root2);
+
+	if(ret)
+	  return true;
+	//看root1的左子树是中是否含有该子树
+	else if(HasSubTree(root1->_left, root2))
+		return true;
+	else  //左子树中没有该子树，再看其右子树中是否含有该子树
+		return HasSubTree(root->_right, root2);
+}
+
+//起始节点的值已经相等，判断其余节点是否都相等
+bool SubTree(Node* root1, Node* root2)
+{
+	if(root1 == NULL && root2 == NULL)
+	  return true; //都为空
+	if(root1 == NULL || root2 == NULL)
+	  return false; //其中一个为空
+
+	//都不空,并且data不相等
+	if(root1->_data != root2->_data)
+	  return false;
+	//都不空，值相等
+	return SubTree(root1->_left, root2->_left)
+		&& SubTree(root1->_right, root2->_right);
+}
 //求两个节点的最近公共祖先
 
 //求二叉树中最远的两个节点的距离
