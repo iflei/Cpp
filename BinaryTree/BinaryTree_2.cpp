@@ -70,12 +70,22 @@ void mirrorTreeNonR(Node* root)
 		  s.push(top->_right);
 	}
 }
-
-//前序线索化
-
-//中序迭代器
-
 //判断一个节点是否在一棵二叉树中
+bool IsInTree(Node* root, Node* node)
+{
+	if(root == NULL)
+	  return false;
+
+	if(root == node)
+	  return true;
+
+	if(IsInTree(root->_left, node))
+	  return true;
+	//左子树没有，结果取决于右子树
+	return IsInTree(root->_right, node);
+}
+
+//判断一颗二叉树是是否是另一颗树的子树
 
 //求两个节点的最近公共祖先
 
