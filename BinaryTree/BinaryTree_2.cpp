@@ -124,6 +124,32 @@ bool SubTree(Node* root1, Node* root2)
 	return SubTree(root1->_left, root2->_left)
 		&& SubTree(root1->_right, root2->_right);
 }
+
+//方法2
+bool IsSubTree(Node* root1, Node* root2)
+{
+	if(root1 && root2 == NULL)
+	  return true;//空树是任何树的子树
+
+	if(root1 == NULL)
+	  return false;//root1不能为空
+
+	return CheckSubTree(root1, root2);
+}
+
+bool CheckSubTree(Node* root1, Node* root2)
+{
+	if(root1 == NULL && root2 == NULL)
+	  return true;
+	if(root1 == NULL || root2 == NULL)
+	  return false; 
+
+	if(root1->data==root2->data)
+        return CheckSubTree(root1->_left, root2->_left) && CheckSubTree(root1->_right, root2->_right);
+	else
+		return CheckSubTree(root1->_left, root2) || CheckSubTree(root1->_right,root2);
+}
+
 //求两个节点的最近公共祖先
 
 //求二叉树中最远的两个节点的距离
