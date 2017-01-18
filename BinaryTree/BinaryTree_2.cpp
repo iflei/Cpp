@@ -126,7 +126,7 @@ bool SubTree(Node* root1, Node* root2)
 }
 
 //方法2
-bool IsSubTree(Node* root1, Node* root2)
+bool CheckSubTree(Node* root1, Node* root2)
 {
 	if(root1 && root2 == NULL)
 	  return true;//空树是任何树的子树
@@ -134,10 +134,10 @@ bool IsSubTree(Node* root1, Node* root2)
 	if(root1 == NULL)
 	  return false;//root1不能为空
 
-	return CheckSubTree(root1, root2);
+	return _CheckSubTree(root1, root2);
 }
 
-bool CheckSubTree(Node* root1, Node* root2)
+bool _CheckSubTree(Node* root1, Node* root2)
 {
 	if(root1 == NULL && root2 == NULL)
 	  return true;
@@ -145,11 +145,46 @@ bool CheckSubTree(Node* root1, Node* root2)
 	  return false; 
 
 	if(root1->data==root2->data)
-        return CheckSubTree(root1->_left, root2->_left) && CheckSubTree(root1->_right, root2->_right);
+        return _CheckSubTree(root1->_left, root2->_left) && _CheckSubTree(root1->_right, root2->_right);
 	else
-		return CheckSubTree(root1->_left, root2) || CheckSubTree(root1->_right,root2);
+		return _CheckSubTree(root1->_left, root2) || _CheckSubTree(root1->_right,root2);
 }
 
 //求两个节点的最近公共祖先
+Node* GetCommon(Node* root, Node* node1, Node* node2)
+{
+	assert(root && node1 && node2);
 
+	if(node1 == root || node2 == root)
+	  return root;
+
+	bool node1InLeft, node1InRight, node2InLeft, node2InRight;
+
+	node1InLeft = Find(root->_left, node1);
+	if(node1InLeft == false)
+	  node1InRight == true;
+
+	node2InLeft = Find(root->_left, node2);
+	if(node2InLeft == false)
+	  node2InRight = true;
+
+	if((node1InLeft && node2InRight) || (node1InRight && node2InLeft))
+	  return root;
+	else if(node1InLeft && node2InLeft)
+	  return GetCommon(root->_left, node1, node2);
+	else
+	  return GetCommon(root->_right, node1, node2);
+}
+
+bool Find(Node* root, Node* node)
+{
+	if(root == node)
+	  return true;
+
+	if(root == NULL)
+	  return false;
+
+	Find(root->_left, node);
+	Find(root->_right, node);
+}
 //求二叉树中最远的两个节点的距离
