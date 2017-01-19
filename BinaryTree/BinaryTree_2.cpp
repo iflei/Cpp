@@ -205,3 +205,18 @@ Node * GetCommon(Node * root, Node * node1, Node * node2)
 } 
 
 //求二叉树中最远的两个节点的距离
+//返回值返回当前树的高度
+int FindMaxPathLen(Node* root, int& maxLen)
+{
+	if(root == NULL)
+	  return 0;
+
+	int leftHeight = FindMaxPathLen(root->_left, maxLen);
+	int rightHeight = FindMaxPathLen(root->_right, maxLen);
+
+	//后序
+	if(leftHeight + rightHeight > maxLen)
+	  maxLen = leftHeight + rightHeight;//自底向上更新maxLen
+
+	return leftHeight > rightHeight ? leftHeight+1 : rightHeight+1;
+}
