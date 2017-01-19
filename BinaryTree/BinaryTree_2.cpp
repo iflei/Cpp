@@ -151,6 +151,7 @@ bool _CheckSubTree(Node* root1, Node* root2)
 }
 
 //求两个节点的最近公共祖先
+//普通二叉树
 Node* GetCommon(Node* root, Node* node1, Node* node2)
 {
 	assert(root && node1 && node2);
@@ -187,4 +188,20 @@ bool Find(Node* root, Node* node)
 	Find(root->_left, node);
 	Find(root->_right, node);
 }
+//有parent三叉树
+Node * GetCommon(Node * root, Node * node1, Node * node2)  
+{
+	while (node1 != NULL)  
+	{  
+		Node* temp = node2;  
+		while (temp != NULL)  
+		{  
+			if (node1 == temp)  
+				return node1;  
+			temp = temp->_parent;  
+		}  
+		node1 = node1->_parent; 
+	}  
+} 
+
 //求二叉树中最远的两个节点的距离
