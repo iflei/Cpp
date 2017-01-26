@@ -127,3 +127,43 @@ void DelKNode(ppList ppHead, int k)
 	}
 }
 
+//判断链表是否带环、求环的长度、求环的入口点
+pNode CheckCycle(pList list)
+{
+	pNode fast = list;
+	pNode slow = list;
+	while(fast && fast->next)
+	{
+		fast = fast->next->next;
+		slow = slow->next;
+		if(fast == slow)
+		  return fast; //返回相遇点
+	}
+
+	return NULL; //不带换
+}
+
+int CircleLength(pNode meet)
+{
+	assert(meet);
+	pNode start = meet;
+	int length = 0;
+	do{
+		start = start->next;
+		length++;
+	}while(start != meet)
+
+	return length;
+}
+//2(L+X) = L+X+nC   L = nC-X 
+pNode CircleEntry(pList list, pNode meet)
+{
+	pNode entry = list;
+	while(entry != meet)
+	{
+		entry = entry->next;
+		meet = meet->next;
+	}
+
+	return entry;
+}
