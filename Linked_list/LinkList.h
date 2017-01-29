@@ -167,3 +167,72 @@ pNode CircleEntry(pList list, pNode meet)
 
 	return entry;
 }
+
+//判断两个链表是否相交，若相交，求交点。（假设链表不带环）
+int CheckCross(pList l1, pList l2)
+{
+	//链表为空或同一个链表
+	if(l1 == NULL || l2 == NULL || l1 == l2)
+	{
+		return 0;
+	}
+
+	while(l1->next)
+	  l1 = l1->next;
+
+	while(l2->next)
+	  l2 = l2->next;
+
+	if(l1 == l2)
+	  return 1;
+	else
+	  return 0;
+}
+
+int GetCross(pList l1, pList l2)
+{
+	//假设l1是长链表
+	pNode longList = l1;
+	pNode shortList = l2;
+	int n = 0;
+	int n1 = 0;
+	int n2 = 0;
+	//统计两个链表长度
+	while(longList->next)
+	{
+		longList = longList->next;
+		n1++;
+	}
+
+	while(shortList->next)
+	{
+		shortList = shortList->next;
+		n2++;
+	}
+
+	//确定长短链表
+	if(n1 < n2)
+	{
+		shortList = l1;
+		longList = l2;
+	}
+	else
+	{
+		longList = l1;
+		shortList = l2;
+	}
+
+	//长链表先走n步
+	n = abs(n1-n2);
+	while(n--)
+		longList = longList->next;
+
+	//两个链表一起走,找相遇点
+	while(longList != shortList)
+	{
+		longList = longList->next;
+		shortList = shortList->next;
+	}
+
+	return longList;
+}
