@@ -236,3 +236,117 @@ int GetCross(pList l1, pList l2)
 
 	return longList;
 }
+
+//删除一个无头单链表的非尾节点
+void EraseNotTail(pNode pos)
+{
+	pNode del = pos->next;
+	pos->data = del-data;
+	pos->next = del->next;
+	free(del);
+	del = NULL;
+}
+
+//从尾到头打印单链表
+void PrintListReverse(pList pHead)
+{
+	if(pHead)
+	{
+		if(pHead->next)
+		  PrintListReverse(pHead->next);
+
+		printf("%d -> ", pHead->data);
+	}
+}
+
+void PrintListReverseNonR(pList pHead)
+{
+	stack<pNode> pNodes;
+	pNode cur = pHead;
+	//压栈
+	while(cur)
+	{
+		pNodes.push(cur);
+		cur = cur->next;
+	}
+	//出栈打印
+	while(!pNodes.empty())
+	{
+		pNode top = pNodes.top();
+		printf("%d -> ", top->data);
+		pNodes.pop();
+	}
+}
+
+//复杂链表的复制
+typedef struct ComplexListNode
+{
+public:
+	ComplexListNode(const int& x)
+		:data(x)
+		 ,next(NULL)
+		 ,random(NULL)
+	{}
+public:
+	int data;
+	struct ComplexListNode* next;
+	struct ComplexListNode* random;
+}ListNode, *pNode, *pList, **ppList;
+
+//方法1
+pNode ComplexListCopy(pList pHead)
+{
+	//第一步：复制原始链表上的每个结点，并用_next链接起来
+	pNode cur = pHead;
+	//创建新链表的第一个结点
+	pNode newHead = new ListNode(cur->data);
+	cur = cur->next;
+	//后面的节点都连接在dest后面
+	pNode dest = newHead;
+	while(cur)
+	{
+		pNode clone = new ListNode(cur->data);
+		dest->next = clone;
+		dest = dest->next;
+		cur = cur->next;
+	}
+
+	/*第二步：定位原链表每个结点_random所指向结点到pHead的距离，
+	 *	从而找到复制的新链表的每个结点_random指向的结点*/
+	cur = pHead;
+	dest = newHead;
+	while(cur)
+	{
+		//对于原链表的一个结点，从head开始找到_random所指向的结点，并计数
+		pNode head = pHead;
+		int count = -1;
+		while(head)
+		{
+			if(cur->random == NULL)
+			  break; //random为NULL时count = -1
+
+			count++;
+			if(cur->random == head)
+			  break;
+
+			head = head->next;
+		}
+
+		//对于新链表的一个结点，从头开始，destCur走count步找到_random指向的结点
+		pNode destCur = newHead;
+		if(count == -1)
+			dest->random = NULL;
+		else
+		{
+			while(count--)
+				destCur = destCur->next; //destCur往后走count步
+			dest->random = destCur;
+		}
+		//cur和dest是对应的节点
+		dest = dest->next;
+		cur = cur->next;
+	}
+	return newHead;
+}
+
+
