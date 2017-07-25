@@ -195,7 +195,3 @@ bool IsCompleteTree(Node* root)
 		return true;
 	}
 }
-
-//求一颗二叉树的镜像
-
-

@@ -32,6 +32,44 @@ Node* ToSortList(Node* root)
 	return head;
 }
 //求一颗二叉树的镜像
+void mirrorTree(Node* root)
+{
+	if(root == NUll)
+	  return;
+
+	if(root->_left == NULL && root->_right == NULL)
+	  return;
+
+	swap(root->_left, root->_right);
+
+	if(root->_left)
+	  mirrorTree(root->_left);
+	if(root->_right)
+	  mirrorTree(root->_right);
+}
+
+void mirrorTreeNonR(Node* root)
+{
+	if(root == NULL)
+	  return;
+
+	stack<Node*> s;
+	s.push(root);
+
+	while(s.size())
+	{
+		Node* top = s.top();
+		s.pop();
+
+		if(top->_left || top->_right)
+		  swap(top->_left, top->_right);
+
+		if(top->_left)
+		  s.push(top->_left);
+		if(top->_right)
+		  s.push(top->_right);
+	}
+}
 
 //前序线索化
 
